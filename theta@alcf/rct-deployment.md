@@ -35,18 +35,16 @@ $ radical-stack
   radical.saga         : 1.5.4
   radical.utils        : 1.5.4
 ```
-Some dependencies could be pre-installed, and a particular branch being used.
-RADICAL-Pilot (RP) branches, which are related to Theta, are: `hotfix/cobalt`
-and `project/covid_theta` (NOTE: these branches reflect the current activities
-and with ongoing development will be either merged into the `master` branch or
-kept as a special case).
+Some dependencies could be pre-installed, and a particular branch being used. 
+RADICAL-Pilot (RP) branch, which is related to Theta, is `project/cobalt` 
+(NOTE: this branch is kept as a special case).
 ```shell script
 conda install -y apache-libcloud chardet colorama future idna msgpack-python \
                  netifaces ntplib parse pymongo python-hostlist pyzmq regex \
                  requests setproctitle urllib3
 
 pip install radical.utils radical.saga
-pip install git+https://github.com/radical-cybertools/radical.pilot.git@project/covid_theta
+pip install git+https://github.com/radical-cybertools/radical.pilot.git@project/cobalt
 ```
 
 # 2. RCT related services
