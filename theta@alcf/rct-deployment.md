@@ -167,7 +167,7 @@ NOTE (2): queue for ThetaGPU is `full-node`
         "default_remote_workdir"      : "$HOME",
         "python_dist"                 : "anaconda",
         "virtenv_mode"                : "use",
-        "virtenv"                     : "$HOME/rct",
+        "virtenv"                     : "/home/$USER/rct",
         "rp_version"                  : "installed",
         "stage_cacerts"               : true,
         "cores_per_node"              : 64
@@ -190,13 +190,13 @@ NOTE (2): queue for ThetaGPU is `full-node`
         "task_launch_method"          : "MPIEXEC",
         "mpi_launch_method"           : "MPIEXEC",
         "pre_bootstrap_0"             : [
-            "source /gpfs/mira-home/$USER/.miniconda3/etc/profile.d/conda.sh"
+            "source /home/$USER/.miniconda3/etc/profile.d/conda.sh"
         ],
-        "default_remote_workdir"      : "$HOME",
         "valid_roots"                 : ["$HOME"],
+        "default_remote_workdir"      : "$HOME",
         "python_dist"                 : "anaconda",
         "virtenv_mode"                : "use",
-        "virtenv"                     : "/gpfs/mira-home/$USER/rct",
+        "virtenv"                     : "rct",
         "rp_version"                  : "installed",
         "stage_cacerts"               : true,
         "cores_per_node"              : 128,
@@ -209,7 +209,7 @@ NOTE (2): queue for ThetaGPU is `full-node`
 Virtual environment activation
 ```shell
 module load miniconda-3
-conda activate $HOME/rct
+conda activate /home/$USER/rct
 ### OR
 # source $HOME/.miniconda3/bin/activate
 # conda activate rct
@@ -228,7 +228,7 @@ Corresponding workflow script could be wrapped with pre-/post-execution actions
 
 # - pre exec -
 module load miniconda-3
-conda activate $HOME/rct
+conda activate /home/$USER/rct
 ### OR
 # source $HOME/.miniconda3/bin/activate
 # conda activate rct
@@ -253,4 +253,28 @@ $HOME/mongo/bin/mongod -f $HOME/mongo/etc/mongodb.theta.conf --shutdown
 # nohup ./rct_launcher.sh > OUTPUT 2>&1 </dev/null &
 ### check the status of the script running
 # jobs -l
+```
+
+# 4.2. Run jobs on GPU nodes ([ThetaGPU](https://www.alcf.anl.gov/support-center/theta/theta-thetagpu-overview))
+Launch script above could be transformed into the following (**service nodes** 
+for ThetaGPU are: `thetagpusn1` or `thetagpusn2` - _"Cobalt jobs cannot be 
+submitted from the Theta login nodes to run on the GPU nodes; until that is 
+supported, users will need to login in to the ThetaGPU service nodes from the 
+Theta login nodes, and from there Cobalt jobs can be submitted to run on the 
+GPU nodes"_)
+```shell
+#!/bin/sh
+
+$HOME/mongo/bin/mongod -f $HOME/mongo/etc/mongodb.theta.conf
+
+export RADICAL_PILOT_DBURL="mongodb://rct:jdWeRT634k@`hostname -f`:59361/rct_db"
+ssh <service_node> "export RADICAL_PILOT_DBURL=$RADICAL_PILOT_DBURL; \
+                    export RADICAL_LOG_LVL=DEBUG; \
+                    export RADICAL_PROFILE=TRUE; \
+                    source $HOME/.miniconda3/bin/activate; \
+                    conda activate rct; \
+                    cd <work_dir>; \
+                    python <work_dir>/<executor>"
+
+$HOME/mongo/bin/mongod -f $HOME/mongo/etc/mongodb.theta.conf --shutdown
 ```
