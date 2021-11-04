@@ -53,23 +53,25 @@ $ radical-stack
   python               : 3.7.9
   virtualenv           : rct
 
-  radical.analytics    : 1.5.0
-  radical.entk         : 1.5.7
-  radical.gtod         : 1.5.0
-  radical.pilot        : 1.5.7
-  radical.saga         : 1.5.7
-  radical.utils        : 1.5.8
+  radical.analytics    : 1.6.0
+  radical.entk         : 1.6.0
+  radical.gtod         : 1.6.0
+  radical.pilot        : 1.6.0
+  radical.saga         : 1.6.0
+  radical.utils        : 1.6.0
 ```
-Some dependencies could be pre-installed, and a particular branch being used. 
-RADICAL-Pilot (RP) branch, which is related to Theta, is `project/cobalt` 
-(NOTE: this branch is kept as a special case).
+Some dependencies could be pre-installed, and if needed a particular branch 
+of RADICAL-Pilot (RP) being installed. Theta uses `aprun` launch method and 
+its updated version is in `fix/lm_aprun` branch.
 ```shell
 conda install -y apache-libcloud chardet colorama future idna msgpack-python \
-                 netifaces ntplib parse pymongo python-hostlist pyzmq regex \
-                 requests setproctitle urllib3
+                 netifaces ntplib parse pymongo pyzmq regex requests \
+                 setproctitle urllib3
 
 pip install radical.utils radical.saga
-pip install git+https://github.com/radical-cybertools/radical.pilot.git@project/cobalt
+pip install radical.pilot
+### OR branch with updated version of APRun launch method
+# pip install git+https://github.com/radical-cybertools/radical.pilot.git@fix/lm_aprun
 ```
 
 # 2. RCT related services
@@ -131,79 +133,18 @@ $HOME/mongo/bin/mongo --host `hostname -f` --port 59361
 ```
 
 # 3. RP resource config for Theta
-Use one of the following locations to keep the configuration data:
-`$HOME/.radical/pilot/configs/resource_anl.json` (user space) OR
-`$HOME/rct/lib/python3.7/site-packages/radical/pilot/configs/resource_anl.json` 
-(virtenv space)
+A corresponding resource configuration is set by a resource label in 
+PilotDescription: `'resource': 'anl.theta'` or `'resource': 'anl.theta_gpu'`.
+If it is needed to update configuration parameters, then either a corresponding 
+file could be created within user space
+`$HOME/.radical/pilot/configs/resource_anl.json` OR edit original file in VE
+`$HOME/rct/lib/python3.7/site-packages/radical/pilot/configs/resource_anl.json`
 
 NOTE (1): default queue for tests is `debug-flat-quad`, production queue is 
 `default` (with minimum 128 nodes).
 
 NOTE (2): queue for ThetaGPU is `full-node` 
 ([user guide](https://www.alcf.anl.gov/support-center/theta/gpu-node-queue-and-policy))
-```json
-{
-    "theta": {
-        "schemas"                     : ["local"],
-        "local"                       : 
-	    {
-            "job_manager_hop"         : "cobalt://localhost/",
-            "job_manager_endpoint"    : "cobalt://localhost/",
-            "filesystem_endpoint"     : "file://localhost/"
-        },
-        "default_queue"               : "debug-flat-quad",
-        "resource_manager"            : "COBALT",
-        "lfs_per_node"                : "/tmp",
-        "agent_config"                : "default",
-        "agent_scheduler"             : "CONTINUOUS",
-        "agent_spawner"               : "POPEN",
-        "agent_launch_method"         : "APRUN",
-        "task_launch_method"          : "APRUN",
-        "mpi_launch_method"           : "APRUN",
-        "pre_bootstrap_0"             : [
-            "module load miniconda-3"
-        ],
-        "valid_roots"                 : ["$HOME"],
-        "default_remote_workdir"      : "$HOME",
-        "python_dist"                 : "anaconda",
-        "virtenv_mode"                : "use",
-        "virtenv"                     : "/home/$USER/rct",
-        "rp_version"                  : "installed",
-        "stage_cacerts"               : true,
-        "cores_per_node"              : 64
-    },
-    "theta_gpu": {
-        "schemas"                     : ["local"],
-        "local"                       :
-        {
-            "job_manager_hop"         : "cobalt://localhost/",
-            "job_manager_endpoint"    : "cobalt://localhost/",
-            "filesystem_endpoint"     : "file://localhost/"
-        },
-        "default_queue"               : "full-node",
-        "resource_manager"            : "COBALT",
-        "lfs_per_node"                : "/tmp",
-        "agent_config"                : "default",
-        "agent_scheduler"             : "CONTINUOUS",
-        "agent_spawner"               : "POPEN",
-        "agent_launch_method"         : "MPIEXEC",
-        "task_launch_method"          : "MPIEXEC",
-        "mpi_launch_method"           : "MPIEXEC",
-        "pre_bootstrap_0"             : [
-            "source /home/$USER/.miniconda3/etc/profile.d/conda.sh"
-        ],
-        "valid_roots"                 : ["$HOME"],
-        "default_remote_workdir"      : "$HOME",
-        "python_dist"                 : "anaconda",
-        "virtenv_mode"                : "use",
-        "virtenv"                     : "rct",
-        "rp_version"                  : "installed",
-        "stage_cacerts"               : true,
-        "cores_per_node"              : 128,
-        "gpus_per_node"               : 8
-    }
-}
-```
 
 # 4. Run RCT-based workflows
 Virtual environment activation
