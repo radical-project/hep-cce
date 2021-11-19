@@ -6,7 +6,7 @@ environment at [Theta](https://www.alcf.anl.gov/support-center/theta)
 # 1. Virtual environment deployment
 
 ## 1.1 Conda environment (basic)
-There are two options to setup conda environment, but the choice of which 
+There are two options to setup `conda` environment, but the choice of which 
 approach to pick depends on the system to run the workload: **Theta** or 
 **ThetaGPU**.
 
@@ -25,7 +25,7 @@ NOTE: the list of installed packages is provided
 [here](https://www.alcf.anl.gov/support-center/theta/conda-theta) 
 (`packages in environment at /soft/datascience/conda/miniconda3/latest`)
 
-(B) Create conda from scratch (for Theta and ThetaGPU)
+(B) Create `conda` from scratch (for Theta and ThetaGPU)
 ```shell
 export PYTHONNOUSERSITE=True
 export RCT_CONDA_ENV=rct
@@ -44,9 +44,9 @@ conda update -y --all
 ## 1.2. RCT installation
 RCT packages are published on [PyPI](https://pypi.org) and are available 
 through `pip` as well as on [conda-forge](https://anaconda.org/conda-forge) 
-for conda package management system. Here are core packages of RCT stack: 
-`radical.utils`, `radical.saga`, `radical.pilot`, `radical.entk` and 
-`radical.analytics`.
+for `conda` package management system. Here are core packages of RCT stack: 
+`radical.gtod`, `radical.utils`, `radical.saga`, `radical.pilot`, 
+`radical.entk` and `radical.analytics`.
 ```shell
 $ radical-stack
 
