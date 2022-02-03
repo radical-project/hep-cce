@@ -13,9 +13,9 @@ conda install -y apache-libcloud chardet colorama future idna msgpack-python \
 pip install git+https://github.com/radical-cybertools/radical.pilot.git@devel
 pip install git+https://gitlab.cern.ch/hep-benchmarks/hep-score.git
 
-# temporary hack (to use updated version of APRun LM)
-wget https://raw.githubusercontent.com/radical-cybertools/radical.pilot/95cb607f31ddb58e8646a5772bf79c704d894e18/src/radical/pilot/agent/launch_method/aprun.py
-mv aprun.py $HOME/.miniconda3/envs/hepscore/lib/python3.7/site-packages/radical/pilot/agent/launch_method/aprun.py
+# branch with updated version of APRun LM is out-of-date (TBD to be merged)
+# wget https://raw.githubusercontent.com/radical-cybertools/radical.pilot/95cb607f31ddb58e8646a5772bf79c704d894e18/src/radical/pilot/agent/launch_method/aprun.py
+# mv aprun.py $HOME/.miniconda3/envs/hepscore/lib/python3.7/site-packages/radical/pilot/agent/launch_method/aprun.py
 
 mkdir -p $HOME/hepscore/containers && cd $HOME/hepscore/containers
 singularity pull atlas-gen-bmk-v2.1.sif docker://gitlab-registry.cern.ch/hep-benchmarks/hep-workloads/atlas-gen-bmk:v2.1
