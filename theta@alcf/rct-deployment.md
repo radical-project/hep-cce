@@ -45,7 +45,7 @@ conda update -y --all
 RCT packages are published on [PyPI](https://pypi.org) and are available 
 through `pip` as well as on [conda-forge](https://anaconda.org/conda-forge) 
 for `conda` package management system. Here are core packages of RCT stack: 
-`radical.gtod`, `radical.utils`, `radical.saga`, `radical.pilot`, 
+`radical.utils`, `radical.gtod`, `radical.saga`, `radical.pilot`, 
 `radical.entk` and `radical.analytics`.
 ```shell
 $ radical-stack
@@ -61,17 +61,16 @@ $ radical-stack
   radical.utils        : 1.6.0
 ```
 Some dependencies could be pre-installed, and if needed a particular branch 
-of RADICAL-Pilot (RP) being installed. Theta uses `aprun` launch method and 
-its updated version is in `fix/lm_aprun` branch.
+of RADICAL-Pilot (RP) being installed.
 ```shell
-conda install -y apache-libcloud chardet colorama future idna msgpack-python \
-                 netifaces ntplib parse pymongo pyzmq regex requests \
-                 setproctitle urllib3
+conda install -y apache-libcloud chardet colorama dill future idna \
+                 msgpack-python netifaces ntplib parse 'pymongo<4' pyzmq \
+                 regex requests setproctitle urllib3
 
-pip install radical.utils radical.saga
+pip install radical.utils radical.gtod radical.saga
 pip install radical.pilot
-### OR branch with updated version of APRun launch method
-# pip install git+https://github.com/radical-cybertools/radical.pilot.git@fix/lm_aprun
+### OR a particular development branch
+# pip install git+https://github.com/radical-cybertools/radical.pilot.git@<branch_name>
 ```
 
 # 2. RCT related services
